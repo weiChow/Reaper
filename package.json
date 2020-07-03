@@ -99,7 +99,7 @@
     }
   },
   "lint-staged": {
-    "*{.ts,.js}": [
+    "*{.js}": [
       "eslint --fix './src/**/*.{js,json}'",
       "prettier --write ./src",
       "git add"
