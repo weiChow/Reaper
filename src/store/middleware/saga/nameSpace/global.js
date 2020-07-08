@@ -10,7 +10,7 @@ const nameSpace = 'global'
  * @returns {IterableIterator<<"PUT", PutEffectDescriptor<{payload: *, type: *}>>|<"TAKE", TakeEffectDescriptor>>}
  */
 export function* systemReady() {
-  const action = yield take(`${nameSpace}/systemReady`)
+  const action = yield take(`${nameSpace}/setSystemReady`)
   yield put({
     type: GLOBAL_SYSTEM_READY,
     payload: action.payload

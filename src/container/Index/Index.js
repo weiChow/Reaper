@@ -7,15 +7,20 @@
  */
 
 import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import './Index.less'
+import { getOrgInfoByOrgCode } from '@/services/global'
 
-function Index() {
-  console.log('hello, ' + name + '!')
-  console.log([1, 2, 3, 4])
+function Index(props) {
   useEffect(() => {
-    setTimeout(() => {
-      console.log('ready')
-    }, 1000)
+    getOrgInfoByOrgCode().then(response => {
+      console.log(response)
+      props.dispatch({
+        type: 'global/setSystemReady',
+        payload: true
+      })
+    })
   }, [])
 
   return (
@@ -25,4 +30,8 @@ function Index() {
   )
 }
 
-export default Index
+Index.propTypes = {
+  dispatch: PropTypes.func
+}
+
+export default connect()(Index)

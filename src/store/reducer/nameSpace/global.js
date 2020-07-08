@@ -12,6 +12,7 @@ import { combineReducers } from 'redux'
 const systemReady = (state = false, action) => {
   switch (action.type) {
     case GLOBAL_SYSTEM_READY:
+      console.log('系统初始化')
       return action.payload
     default:
       return state
