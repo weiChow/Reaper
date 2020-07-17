@@ -16,7 +16,7 @@ import { getOrgInfoByOrgCode } from '@/services/global'
 
 function Index(props) {
   useEffect(() => {
-    getOrgInfoByOrgCode().then(response => {
+    getOrgInfoByOrgCode('510100000000').then(response => {
       console.log(response)
       props.dispatch({
         type: 'global/setSystemReady'
