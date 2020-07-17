@@ -1,4 +1,8 @@
 'use strict'
+/**
+ * Created by weiChow on 2020/07/13
+ * global model
+ */
 
 export default {
   namespace: 'global',
@@ -8,7 +12,13 @@ export default {
   },
 
   effects: {
-    *setSystemReady({ payload }, { put }) {
+    *setSystemReady({ payload }, { put, call }) {
+      yield call(
+        () =>
+          new Promise(resolve => {
+            window.setTimeout(resolve, 3000)
+          })
+      )
       yield put({
         type: 'global/save',
         payload

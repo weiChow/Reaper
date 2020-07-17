@@ -1,7 +1,7 @@
 'use strict'
 /**
- * Created by weiChow on 2020/07/13.
- * Reaper data flow.
+ * Created by weiChow on 2020/07/13
+ * Reaper data flow
  */
 import { composeWithDevTools } from 'redux-devtools-extension' // devtools
 import { createStore, applyMiddleware, combineReducers } from 'redux' // Redux
