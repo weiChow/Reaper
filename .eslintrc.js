@@ -8,7 +8,6 @@ module.exports = {
     es6: true
   },
   globals: {
-    models: 'readonly',
     environment: 'readonly' // Specifying Globals
   },
   plugins: ['babel', 'react'], // Prettier will be automatically injected by plugin:prettier/recommended
