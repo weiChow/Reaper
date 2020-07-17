@@ -10,9 +10,8 @@ import RootRouter from '@/router/index' // 路由入口
 import { Provider } from 'react-redux'
 import 'animate.css' // 动画效果
 import '@/main.less' // 主框架样式
-// 国际化(中文)
 import { ConfigProvider } from 'antd'
-import zhCN from 'antd/es/locale/zh_CN'
+import zhCN from 'antd/es/locale/zh_CN' // 国际化(中文)
 import reaper from '@/store/register/reaper'
 
 if (module.hot) {
