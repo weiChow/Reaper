@@ -7,7 +7,9 @@
  */
 
 import React, { useEffect } from 'react'
+import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
 import PropTypes from 'prop-types'
 import './Index.less'
 import { getOrgInfoByOrgCode } from '@/services/global'
@@ -18,7 +20,9 @@ function Index(props) {
       console.log(response)
       props.dispatch({
         type: 'global/setSystemReady',
-        payload: true
+        payload: {
+          systemReady: true
+        }
       })
     })
   }, [])
@@ -34,4 +38,4 @@ Index.propTypes = {
   dispatch: PropTypes.func
 }
 
-export default connect()(Index)
+export default compose(connect(), withRouter)(Index)

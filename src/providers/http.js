@@ -83,13 +83,36 @@ export function getCancelSource() {
 }
 
 /**
+ * 请求
+ * @returns {Promise}
+ */
+
+export function request() {
+  const [method, ...argv] = arguments
+  switch (method) {
+    case 'get':
+    case 'GET':
+      return get(...argv)
+    case 'post':
+    case 'POST':
+      return post(...argv)
+    case 'patch':
+    case 'PATCH':
+      return patch(...argv)
+    case 'put':
+    case 'PUT':
+      return put(...argv)
+  }
+}
+
+/**
  * get
  * @param url
  * @param config
  * @returns {Promise}
  */
 
-export function get(url, config = { params: {} }) {
+function get(url, config = { params: {} }) {
   console.log(config)
   return new Promise((resolve, reject) => {
     http
@@ -110,7 +133,7 @@ export function get(url, config = { params: {} }) {
  * @returns {Promise}
  */
 
-export function post(url, config = { data: {} }) {
+function post(url, config = { data: {} }) {
   return new Promise((resolve, reject) => {
     http.post(url, config).then(
       response => {
@@ -130,7 +153,7 @@ export function post(url, config = { data: {} }) {
  * @returns {Promise}
  */
 
-export function patch(url, config = { data: {} }) {
+function patch(url, config = { data: {} }) {
   return new Promise((resolve, reject) => {
     http.patch(url, config).then(
       response => {
@@ -150,7 +173,7 @@ export function patch(url, config = { data: {} }) {
  * @returns {Promise}
  */
 
-export function put(url, config = { data: {} }) {
+function put(url, config = { data: {} }) {
   return new Promise((resolve, reject) => {
     http.put(url, config).then(
       response => {
