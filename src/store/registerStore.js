@@ -1,14 +1,14 @@
 'use strict'
 /**
  * Created by weiChow on 2020/07/13
- * Reaper data flow
+ * register data flow
  */
 import { composeWithDevTools } from 'redux-devtools-extension' // devtools
 import { createStore, applyMiddleware, combineReducers } from 'redux' // Redux
 import createSagaMiddleware from 'redux-saga'
 import * as sagaEffects from 'redux-saga/effects'
 
-export default function reaper() {
+export default function registerStore() {
   const [
     NAMESPACE_SEP, // 类型分隔符
     ROOT_NAMESPACE, // 根级命名空间

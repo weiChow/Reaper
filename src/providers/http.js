@@ -13,9 +13,7 @@ const http = axios.create({
 
 // request 拦截器
 http.interceptors.request.use(
-  config => {
-    return config
-  },
+  config => config,
   error => {
     return Promise.reject(error)
   }
@@ -86,7 +84,6 @@ export function getCancelSource() {
  * 请求
  * @returns {Promise}
  */
-
 export function request() {
   const [method, ...argv] = arguments
   switch (method) {
@@ -111,7 +108,6 @@ export function request() {
  * @param config
  * @returns {Promise}
  */
-
 function get(url, config = { params: {} }) {
   console.log(config)
   return new Promise((resolve, reject) => {
@@ -132,7 +128,6 @@ function get(url, config = { params: {} }) {
  * @param config
  * @returns {Promise}
  */
-
 function post(url, config = { data: {} }) {
   return new Promise((resolve, reject) => {
     http.post(url, config).then(
@@ -152,7 +147,6 @@ function post(url, config = { data: {} }) {
  * @param config
  * @returns {Promise}
  */
-
 function patch(url, config = { data: {} }) {
   return new Promise((resolve, reject) => {
     http.patch(url, config).then(
@@ -172,7 +166,6 @@ function patch(url, config = { data: {} }) {
  * @param config
  * @returns {Promise}
  */
-
 function put(url, config = { data: {} }) {
   return new Promise((resolve, reject) => {
     http.put(url, config).then(

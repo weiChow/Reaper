@@ -12,7 +12,7 @@ import 'animate.css' // 动画效果
 import '@/main.less' // 主框架样式
 import { ConfigProvider } from 'antd'
 import zhCN from 'antd/es/locale/zh_CN' // 国际化(中文)
-import reaper from '@/store/register/reaper'
+import registerStore from '@/store/registerStore'
 
 if (module.hot) {
   module.hot.accept()
@@ -20,7 +20,7 @@ if (module.hot) {
 
 // 创建store
 const context = require.context('@/model', true, /\.js$/)
-const store = reaper()
+const store = registerStore()
   .useModel(context.keys().map(key => context(key).default))
   .run()
 
