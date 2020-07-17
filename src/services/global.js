@@ -4,7 +4,7 @@
  * global service
  */
 
-import { request } from '../providers/http'
+import { request } from '@/providers/http'
 
 /**
  * 通过组织机构代码获取组织机构信息

@@ -1,7 +1,6 @@
 'use strict'
 /**
- * Created by weiChow on 2020/06/30.
- * @author weiChow
+ * Created by weiChow on 2020/06/30
  * http
  */
 
