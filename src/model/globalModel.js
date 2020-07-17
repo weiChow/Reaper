@@ -5,7 +5,7 @@
  */
 
 export default {
-  namespace: 'global',
+  nameSpace: 'global',
 
   state: {
     systemReady: false // 系统初始化完毕
@@ -21,7 +21,9 @@ export default {
       )
       yield put({
         type: 'global/save',
-        payload
+        payload: {
+          systemReady: true
+        }
       })
     }
   },

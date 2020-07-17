@@ -1,6 +1,6 @@
 'use strict'
 /**
- * Created by weiChow on 2020/06/30.
+ * Created by weiChow on 2020/06/30
  * React、ReactDOM、RootRouter、Redux
  */
 
@@ -20,8 +20,9 @@ if (module.hot) {
 }
 
 // 创建store
+const context = require.context('@/model', true, /\.js$/)
 const store = reaper()
-  .useModel([require('@/model/globalModel').default])
+  .useModel(context.keys().map(key => context(key).default))
   .run()
 
 const rootContainer = (

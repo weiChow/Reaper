@@ -19,10 +19,7 @@ function Index(props) {
     getOrgInfoByOrgCode().then(response => {
       console.log(response)
       props.dispatch({
-        type: 'global/setSystemReady',
-        payload: {
-          systemReady: true
-        }
+        type: 'global/setSystemReady'
       })
     })
   }, [])

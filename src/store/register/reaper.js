@@ -11,22 +11,22 @@ import * as sagaEffects from 'redux-saga/effects'
 export default function reaper() {
   const [
     NAMESPACE_SEP, // 类型分隔符
-    ROOT_NAMESPACE // 根级命名空间
-  ] = ['/', 'global']
-  const _actions = {}
-  const _effects = []
+    ROOT_NAMESPACE, // 根级命名空间
+    _actions,
+    _effects // 副作用effect
+  ] = ['/', 'global', {}, []]
   const sagaMiddleware = createSagaMiddleware()
   const app = {
     store: null,
     _models: [],
     useModel: model => {
       app._models.push(
-        ...model.map(current => {
-          if (!current.nameSpace) {
-            current.nameSpace = ROOT_NAMESPACE
-          }
-          return current
-        })
+        ...model
+          .filter(m => m) // To rule out empty file
+          .map(current => {
+            current.nameSpace = current.nameSpace || ROOT_NAMESPACE
+            return current
+          })
       )
       return app
     },
@@ -61,7 +61,9 @@ export default function reaper() {
    */
   function createReducers() {
     return app._models.reduce((acc, model) => {
-      acc[model.namespace] = createReducerFunc(model)
+      if (model.reducers) {
+        acc[model.nameSpace] = createReducerFunc(model)
+      }
       return acc
     }, {})
   }
@@ -71,26 +73,28 @@ export default function reaper() {
    * @param model
    */
   function createReducerFunc(model) {
-    const { namespace, reducers } = model
+    const { nameSpace, reducers } = model
     const initState = model.state
     // redux reducer
-    const reducerFunMap = Object.keys(reducers).reduce((acc, reducerKey) => {
-      if (!_actions[namespace]) {
-        _actions[namespace] = {}
+    if (reducers) {
+      const reducerFunMap = Object.keys(reducers).reduce((acc, reducerKey) => {
+        if (!_actions[nameSpace]) {
+          _actions[nameSpace] = {}
+        }
+        _actions[nameSpace] = {
+          ..._actions[nameSpace],
+          [reducerKey]: actionWrapper(`${nameSpace}${NAMESPACE_SEP}${reducerKey}`)
+        }
+        acc[`${nameSpace}${NAMESPACE_SEP}${reducerKey}`] = reducers[reducerKey]
+        return acc
+      }, {})
+      return (state = initState, action) => {
+        const type = action.type
+        if (reducerFunMap[type]) {
+          return reducerFunMap[action.type](state, action)
+        }
+        return state
       }
-      _actions[namespace] = {
-        ..._actions[namespace],
-        [reducerKey]: actionWrapper(`${namespace}${NAMESPACE_SEP}${reducerKey}`)
-      }
-      acc[`${namespace}${NAMESPACE_SEP}${reducerKey}`] = reducers[reducerKey]
-      return acc
-    }, {})
-    return (state = initState, action) => {
-      const type = action.type
-      if (reducerFunMap[type]) {
-        return reducerFunMap[action.type](state, action)
-      }
-      return state
     }
   }
 
@@ -142,7 +146,6 @@ export default function reaper() {
       function* sagaStart() {
         console.log(`Hello ${environment} Saga, Start!`)
       }
-
       yield sagaEffects.all(_effects.concat(sagaStart).map(sagaEffects.fork))
     }
   }
