@@ -12,7 +12,8 @@ import { request } from '@/providers/http'
  * @returns {Promise}
  */
 export function getOrgInfoByOrgCode(orgCode) {
-  return request('get', 'http://171.220.244.49:8883/metaData/getOrgInfoByOrgCode', {
-    params: { orgCode }
+  return request('http://171.220.244.49:8883/metaData/getOrgInfoByOrgCode', {
+    method: 'get',
+    data: { orgCode }
   })
 }

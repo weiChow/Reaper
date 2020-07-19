@@ -81,23 +81,91 @@ export function getCancelSource() {
 
 /**
  * 请求
+ * @param url
+ * @param options
  * @returns {Promise}
  */
-export function request() {
-  const [method, ...argv] = arguments
-  switch (method) {
+export function request(url, options) {
+  switch (options.method) {
     case 'get':
     case 'GET':
-      return get(...argv)
+      return get(url, { params: options.data || {} })
     case 'post':
     case 'POST':
-      return post(...argv)
+      return post(url, {
+        headers: getRequestHeaders(options),
+        transformRequest: [data => transformRequestOptions(options.type, data)]
+      })
     case 'patch':
     case 'PATCH':
-      return patch(...argv)
+      return patch(url, {
+        headers: getRequestHeaders(options),
+        transformRequest: [data => transformRequestOptions(options.type, data)]
+      })
     case 'put':
     case 'PUT':
-      return put(...argv)
+      return put(url, {
+        headers: getRequestHeaders(options),
+        transformRequest: [data => transformRequestOptions(options.type, data)]
+      })
+  }
+}
+
+/**
+ * 获取请求头
+ * @param options
+ * @returns {any | ({} & {'Content-Type': string} & {})}
+ */
+function getRequestHeaders(options) {
+  const headers = Object.assign(
+    {},
+    {
+      'Content-Type': ''
+    },
+    options.headers || {}
+  )
+  switch (options.type) {
+    case 'json':
+    case 'JSON':
+      headers['Content-Type'] = 'application/json'
+      break
+    case 'form':
+    case 'FORM':
+      headers['Content-Type'] = 'multipart/form-data'
+      break
+    default:
+      headers['Content-Type'] = 'application/x-www-form-urlencoded'
+  }
+  return headers
+}
+
+/**
+ * 转换请求数据
+ * @param type
+ * @param data
+ * @returns {FormData|*}
+ */
+function transformRequestOptions(type, data = {}) {
+  switch (type) {
+    case 'json':
+    case 'JSON':
+      return data
+    case 'form':
+    case 'FORM': {
+      const formData = new FormData()
+      for (const key of Object.keys(data)) {
+        if (Object.prototype.toString.call(data[key]) === '[object Array]') {
+          data[key].map(item => {
+            formData.append(key, item)
+          })
+        } else {
+          formData.append(key, data[key])
+        }
+      }
+      return formData
+    }
+    default:
+      return data
   }
 }
 
@@ -107,8 +175,7 @@ export function request() {
  * @param config
  * @returns {Promise}
  */
-function get(url, config = { params: {} }) {
-  console.log(config)
+function get(url, config) {
   return new Promise((resolve, reject) => {
     http
       .get(url, config)
@@ -127,7 +194,7 @@ function get(url, config = { params: {} }) {
  * @param config
  * @returns {Promise}
  */
-function post(url, config = { data: {} }) {
+function post(url, config) {
   return new Promise((resolve, reject) => {
     http.post(url, config).then(
       response => {
@@ -146,7 +213,7 @@ function post(url, config = { data: {} }) {
  * @param config
  * @returns {Promise}
  */
-function patch(url, config = { data: {} }) {
+function patch(url, config) {
   return new Promise((resolve, reject) => {
     http.patch(url, config).then(
       response => {
@@ -165,7 +232,7 @@ function patch(url, config = { data: {} }) {
  * @param config
  * @returns {Promise}
  */
-function put(url, config = { data: {} }) {
+function put(url, config) {
   return new Promise((resolve, reject) => {
     http.put(url, config).then(
       response => {
