@@ -60,13 +60,13 @@ module.exports = () => [
     test: /\.(png|jpg|gif|svg|ico|gltf|glb)$/i, // i不区分大小写
     use: [
       {
-        loader: 'file-loader',
+        loader: 'url-loader', // url-loader(可进行构建配置)作用与file-loader相同 内部使用file-loader
         options: {
-          name: '[name]_[hash:8].[ext]', // 默认compilers使用[hash:8].[ext]
+          limit: 3072,
+          name: '[name]_[hash:8].[ext]',
           outputPath: './static/images'
         }
-      },
-      'image-webpack-loader' // 图片压缩工具
+      }
     ]
   },
   // 字体 图标
@@ -76,7 +76,7 @@ module.exports = () => [
       {
         loader: 'url-loader', // url-loader(可进行构建配置)作用与file-loader相同 内部使用file-loader
         options: {
-          limit: 30720,
+          limit: 3072,
           name: '[name]_[hash:8].[ext]',
           outputPath: './static/fonts'
         }
@@ -89,8 +89,10 @@ module.exports = () => [
     exclude: /(node_modules|bower_components)/,
     use: [
       {
-        loader: 'file-loader',
+        loader: 'url-loader', // url-loader(可进行构建配置)作用与file-loader相同 内部使用file-loader
         options: {
+          limit: 30720,
+          name: '[name]_[hash:8].[ext]',
           outputPath: './static/data'
         }
       }
