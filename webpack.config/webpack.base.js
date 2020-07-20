@@ -40,6 +40,7 @@ module.exports = () => {
         inject: true,
         minify: false,
         chunksSortMode: 'none', // 如果使用webpack4将该配置项设置为'none'
+        title: 'Reaper',
         systemConfig: `${publicPath ? `${publicPath}/` : '/'}config/systemConfig.js` // 系统配置文件
       })
     ]),

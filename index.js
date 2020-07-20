@@ -13,6 +13,7 @@ import '@/main.less' // 主框架样式
 import { ConfigProvider } from 'antd'
 import zhCN from 'antd/es/locale/zh_CN' // 国际化(中文)
 import registerStore from '@/store/registerStore'
+import systemConfig from '@/config/systemConfig'
 
 if (module.hot) {
   module.hot.accept()
@@ -23,6 +24,9 @@ const context = require.context('@/model', true, /\.js$/)
 const store = registerStore()
   .useModel(context.keys().map(key => context(key).default))
   .run()
+
+// 系统名
+document.title = systemConfig.PGIS_SYSCONFIG.system.title
 
 const rootContainer = (
   <Provider {...{ store }}>
