@@ -71,7 +71,7 @@ module.exports = () => [
   },
   // 字体 图标
   {
-    test: /\.(ttf|eot|woff|woff2|otf)$/,
+    test: /\.(ttf|eot|woff|woff2|otf)$/i,
     use: [
       {
         loader: 'url-loader', // url-loader(可进行构建配置)作用与file-loader相同 内部使用file-loader
