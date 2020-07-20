@@ -18,7 +18,7 @@ module.exports = () => {
     new CopyPlugin({
       patterns: [
         {
-          from: path.join(__dirname, '../../src/static/**/*'), // static resource directory
+          from: path.join(__dirname, '../../src/static'), // static resource directory
           to: './static',
           cacheTransform: true,
           noErrorOnMissing: true // Doesn't generate an error on missing file(s).

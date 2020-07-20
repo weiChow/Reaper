@@ -26,6 +26,7 @@ function Index(props) {
 
   return (
     <main className="main">
+      <div className="universe animate__animated animate__fadeIn" />
       <h1 className="animate__animated animate__fadeIn">welcome Raper Cli ！</h1>
     </main>
   )
