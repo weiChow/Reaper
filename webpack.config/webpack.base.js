@@ -11,17 +11,21 @@ const plugins = require('./common/plugins')
 
 // 简化了HTML文件的创建，以便为你的webpack包提供服务
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const baseEntry = path.resolve(__dirname, '../index.js')
 
 const publicPath = '' // 系统相对服务路径 默认为空
 
 module.exports = () => {
   return {
     mode: process.env.NODE_ENV === 'dev' ? 'development' : 'production', // 配置webpack构建模式(development production)
-    entry: [
-      'react-hot-loader/patch',
-      'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true&timeout=20000',
-      path.resolve(__dirname, '../index.js')
-    ], // 入口
+    entry:
+      process.env.NODE_ENV === 'dev'
+        ? [
+            'react-hot-loader/patch',
+            'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true&timeout=20000',
+            baseEntry
+          ]
+        : baseEntry, // 入口
     output: {
       path: path.resolve(__dirname, '../dist'),
       filename: './static/js/[name]_[hash:16].js',
