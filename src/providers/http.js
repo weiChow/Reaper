@@ -89,26 +89,33 @@ export function request(url, options) {
   switch (options.method) {
     case 'get':
     case 'GET':
-      return get(url, { params: options.data || {} })
+      return get(url, Object.assign({}, { params: options.data || {} }, options))
     case 'post':
     case 'POST':
-      return post(url, {
-        headers: getRequestHeaders(options),
-        transformRequest: [data => transformRequestOptions(options.type, data)]
-      })
+      return post(url, getComplexRequestConfig(options))
     case 'patch':
     case 'PATCH':
-      return patch(url, {
-        headers: getRequestHeaders(options),
-        transformRequest: [data => transformRequestOptions(options.type, data)]
-      })
+      return patch(url, getComplexRequestConfig(options))
     case 'put':
     case 'PUT':
-      return put(url, {
-        headers: getRequestHeaders(options),
-        transformRequest: [data => transformRequestOptions(options.type, data)]
-      })
+      return put(url, getComplexRequestConfig(options))
   }
+}
+
+/**
+ * 获取复杂请求配置
+ * @param options
+ * @returns {any}
+ */
+function getComplexRequestConfig(options) {
+  return Object.assign(
+    {},
+    {
+      headers: getRequestHeaders(options),
+      transformRequest: [data => transformRequestOptions(options.type, data)]
+    },
+    options
+  )
 }
 
 /**
