@@ -26,7 +26,7 @@ app.use(
   })
 )
 
-app.use(express.static(path.join(__dirname, './dist'))) // 设置静态访问文件路径
+// app.use(express.static(path.join(__dirname, './dist'))) // 设置静态访问文件路径
 
 app.use(
   webpackHotMiddleware(compiler, {
@@ -35,6 +35,18 @@ app.use(
     heartbeat: 10 * 1000 // 心跳检测(一般为timeout一半)
   })
 )
+
+app.get('*', (req, res, next) => {
+  const filename = path.join(__dirname, './dist', 'index.html')
+  compiler.outputFileSystem.readFile(filename, (err, result) => {
+    if (err) {
+      return next(err)
+    }
+    res.set('content-type', 'text/html')
+    res.send(result)
+    res.end()
+  })
+})
 
 app.listen(port, function () {
   const address = [`http://localhost:${port}/`, `http://${getIPAddress()}:${port}/`]
