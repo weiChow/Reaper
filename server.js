@@ -14,6 +14,7 @@ const compiler = webpack(config)
 compiler.apply(new webpack.ProgressPlugin()) // 进度显示
 
 const port = 9999 // 开发环境端口
+const publicPath = '/' // 系统相对服务路径 默认为空
 
 app.use(
   webpackDevMiddleware(compiler, {
@@ -49,7 +50,7 @@ app.get('*', (req, res, next) => {
 })
 
 app.listen(port, function () {
-  const address = [`http://localhost:${port}/`, `http://${getIPAddress()}:${port}/`]
+  const address = [`http://localhost:${port}${publicPath}`, `http://${getIPAddress()}:${port}${publicPath}`]
   console.log('app listening on the following address:')
   console.log(`${address[0]}!`)
   console.log(`${address[1]}!`)

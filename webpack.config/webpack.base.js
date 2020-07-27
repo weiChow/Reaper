@@ -13,7 +13,7 @@ const plugins = require('./common/plugins')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const baseEntry = path.resolve(__dirname, '../index.js')
 
-const publicPath = '' // 系统相对服务路径 默认为空
+const publicPath = '/' // 系统相对服务路径 默认为 /
 
 module.exports = () => {
   return {
@@ -30,7 +30,7 @@ module.exports = () => {
       path: path.resolve(__dirname, '../dist'),
       filename: './static/js/[name]_[hash:16].js',
       chunkFilename: './static/js/chunk/chunk-[name]-[id].[chunkhash:8].bundle.js',
-      publicPath: publicPath || '/'
+      publicPath: `${publicPath === '/' ? publicPath : `${publicPath}/`}`
     }, // 输出构建
     // module 关于模块配置
     module: {
@@ -45,7 +45,7 @@ module.exports = () => {
         minify: false,
         chunksSortMode: 'none', // 如果使用webpack4将该配置项设置为'none'
         title: 'Reaper',
-        systemConfig: `${publicPath ? `${publicPath}/` : '/'}config/systemConfig.js` // 系统配置文件
+        systemConfig: `${publicPath === '/' ? publicPath : `${publicPath}/`}config/systemConfig.js` // 系统配置文件
       })
     ]),
     optimization: optimization(),
@@ -56,7 +56,7 @@ module.exports = () => {
       alias: {
         '@': path.join(__dirname, '..', 'src'), // @映射到src目录
         'react-dom': '@hot-loader/react-dom', // 该包支持对React hook热更新
-        static: path.join(__dirname, '..', 'src/static') // 指向静态资源目录
+        static: path.join(__dirname, '..', '/src/static') // 指向静态资源目录
       }
     }
   }
