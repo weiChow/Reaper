@@ -15,6 +15,10 @@ import zhCN from 'antd/es/locale/zh_CN' // 国际化(中文)
 import registerStore from '@/store/registerStore'
 import systemConfig from '@/config/systemConfig'
 
+if (environment === 'dev') {
+  require('@/mock/index')
+}
+
 if (module.hot) {
   module.hot.accept()
 }

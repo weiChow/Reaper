@@ -12,9 +12,8 @@ export default function registerStore() {
   const [
     NAMESPACE_SEP, // 类型分隔符
     ROOT_NAMESPACE, // 根级命名空间
-    _actions,
     _effects // 副作用effect
-  ] = ['/', 'global', {}, []]
+  ] = ['/', 'global', []]
   const sagaMiddleware = createSagaMiddleware()
   const app = {
     store: null,
@@ -29,12 +28,6 @@ export default function registerStore() {
           })
       )
       return app
-    },
-    actions: nameSpace => {
-      if (typeof nameSpace !== 'undefined' && _actions[nameSpace]) {
-        return _actions[nameSpace]
-      }
-      return _actions
     },
     run
   }
@@ -78,13 +71,6 @@ export default function registerStore() {
     // redux reducer
     if (reducers) {
       const reducerFunMap = Object.keys(reducers).reduce((acc, reducerKey) => {
-        if (!_actions[nameSpace]) {
-          _actions[nameSpace] = {}
-        }
-        _actions[nameSpace] = {
-          ..._actions[nameSpace],
-          [reducerKey]: actionWrapper(`${nameSpace}${NAMESPACE_SEP}${reducerKey}`)
-        }
         acc[`${nameSpace}${NAMESPACE_SEP}${reducerKey}`] = reducers[reducerKey]
         return acc
       }, {})
@@ -96,27 +82,6 @@ export default function registerStore() {
         return state
       }
     }
-  }
-
-  /**
-   * action包装器
-   * @param type
-   */
-  function actionWrapper(type) {
-    function actionCreator(payload) {
-      return {
-        type: type,
-        payload
-      }
-    }
-
-    // 重写toString
-    actionCreator._toString = actionCreator.toString
-
-    actionCreator.toString = () => {
-      return type
-    }
-    return actionCreator
   }
 
   /**

@@ -12,7 +12,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import PropTypes from 'prop-types'
 import './Index.less'
-import { getOrgInfoByOrgCode } from '@/services/global'
+import { getOrgInfoByOrgCode, getApiMock } from '@/services/global'
 
 function Index(props) {
   useEffect(() => {
@@ -21,6 +21,9 @@ function Index(props) {
       props.dispatch({
         type: 'global/setSystemReady'
       })
+    })
+    getApiMock().then(data => {
+      console.log(data)
     })
   }, [])
 

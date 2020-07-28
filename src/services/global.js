@@ -17,3 +17,9 @@ export function getOrgInfoByOrgCode(orgCode) {
     data: { orgCode }
   })
 }
+
+export function getApiMock() {
+  return request('/api/global', {
+    method: 'get'
+  })
+}
