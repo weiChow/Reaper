@@ -5,6 +5,7 @@ const os = require('os')
 const open = require('open')
 const express = require('express')
 const webpack = require('webpack')
+const apiMocker = require('mocker-api')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 
@@ -36,6 +37,8 @@ app.use(
     heartbeat: 10 * 1000 // 心跳检测(一般为timeout一半)
   })
 )
+
+apiMocker(app, require.resolve('./src/mock/index'))
 
 app.get('*', (req, res, next) => {
   const filename = path.join(__dirname, './dist', 'index.html')
